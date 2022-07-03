@@ -15,7 +15,7 @@ const useAuth = () => {
     hydrate();
   });
 
-  return hydrated && Boolean(user);
+  return { hydrated, user };
 };
 
 export default useAuth;

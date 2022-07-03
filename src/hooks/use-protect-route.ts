@@ -5,10 +5,12 @@ import { any } from "ramda";
 const privateRoutes = ["/main/songs"];
 const publicRoutes = ["/login"];
 
-const useProtectRoute = (authenticated: boolean) => {
+const useProtectRoute = (hydrated: boolean, authenticated: boolean) => {
   const location = useLocation();
   const navigate = useNavigate();
   return useEffect(() => {
+    if (!hydrated) return;
+
     const { pathname } = location;
     if (!authenticated && any((s) => pathname.startsWith(s), privateRoutes)) {
       navigate("/login", { replace: true });

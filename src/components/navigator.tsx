@@ -3,8 +3,8 @@ import useAuth from "@/hooks/use-auth";
 import useProtectRoute from "@/hooks/use-protect-route";
 
 const Navigator: FC<PropsWithChildren> = ({ children }) => {
-  const authenticated = useAuth();
-  useProtectRoute(authenticated);
+  const { user, hydrated } = useAuth();
+  useProtectRoute(hydrated, Boolean(user));
   return <>{children}</>;
 };
 export default Navigator;
