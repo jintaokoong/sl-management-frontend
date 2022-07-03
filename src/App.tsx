@@ -1,3 +1,7 @@
+import { useRoutes } from "react-router-dom";
+import routeDeclarations from "@/constants/route-declarations";
+
 export default function App() {
-  return <div className="App">hello world</div>;
+  const routes = useRoutes(routeDeclarations);
+  return routes;
 }

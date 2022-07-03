@@ -20,8 +20,11 @@
     "!(*pnpm-lock).yaml": "prettier --write"
   },
   "dependencies": {
+    "firebase": "^9.8.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-router-dom": "^6.3.0",
+    "zustand": "4.0.0-rc.1"
   },
   "devDependencies": {
     "@0x219/commitlint-config": "1.0.2",
