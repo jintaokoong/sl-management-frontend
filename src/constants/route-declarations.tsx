@@ -2,6 +2,7 @@ import { Outlet, RouteObject } from "react-router-dom";
 import Login from "@/pages/login";
 import Heimdall from "@/components/heimdall";
 import Navigator from "@/components/navigator";
+import DashboardLayout from "@/components/templates/dashboard-layout";
 
 const routeDeclarations: RouteObject[] = [
   {
@@ -13,14 +14,14 @@ const routeDeclarations: RouteObject[] = [
     ),
     children: [
       {
-        path: "/login",
+        path: "login",
         element: <Login />,
       },
       {
-        path: "/main",
+        path: "main",
         element: (
           <Heimdall>
-            <Outlet />
+            <DashboardLayout />
           </Heimdall>
         ),
         children: [
