@@ -1,14 +1,36 @@
-import { RouteObject } from "react-router-dom";
+import { Outlet, RouteObject } from "react-router-dom";
 import Login from "@/pages/login";
+import Heimdall from "@/components/heimdall";
+import Navigator from "@/components/navigator";
 
 const routeDeclarations: RouteObject[] = [
   {
     path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
+    element: (
+      <Navigator>
+        <Outlet />
+      </Navigator>
+    ),
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/main",
+        element: (
+          <Heimdall>
+            <Outlet />
+          </Heimdall>
+        ),
+        children: [
+          {
+            path: "songs",
+            element: <div>Songs</div>,
+          },
+        ],
+      },
+    ],
   },
 ];
 

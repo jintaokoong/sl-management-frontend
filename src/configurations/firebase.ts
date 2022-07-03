@@ -1,4 +1,4 @@
-import firebase from "firebase/app";
+import * as firebase from "firebase/app";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_API_KEY,

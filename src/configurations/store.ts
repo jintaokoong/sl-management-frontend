@@ -1,9 +1,32 @@
-import create from "zustand";
+import auth from "firebase/auth";
 
-interface Store {}
+import create, { StateCreator } from "zustand";
 
-const useStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
+interface AuthSlice {
+  user: auth.User | null;
+  authenticated: (user: auth.User) => void;
+  unauthorized: () => void;
+}
+
+const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
+  user: null,
+  authenticated: (user) => set(() => ({ user: user })),
+  unauthorized: () => set(() => ({ user: null })),
+});
+
+interface HydrationSlice {
+  hydrated: boolean;
+  hydrate: () => void;
+}
+
+const createHydrationSlice: StateCreator<HydrationSlice> = (set) => ({
+  hydrated: false,
+  hydrate: () => set({ hydrated: true }),
+});
+
+const useStore = create<AuthSlice & HydrationSlice>()((...a) => ({
+  ...createAuthSlice(...a),
+  ...createHydrationSlice(...a),
 }));
+
+export default useStore;

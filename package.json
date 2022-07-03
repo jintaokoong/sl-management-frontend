@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "firebase": "^9.8.4",
+    "ramda": "^0.28.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^6.3.0",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@0x219/commitlint-config": "1.0.2",
     "@commitlint/cli": "17.0.3",
+    "@types/ramda": "^0.28.14",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
     "@typescript-eslint/eslint-plugin": "5.30.3",

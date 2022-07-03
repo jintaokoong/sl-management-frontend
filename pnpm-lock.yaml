@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@0x219/commitlint-config': 1.0.2
   '@commitlint/cli': 17.0.3
+  '@types/ramda': ^0.28.14
   '@types/react': 18.0.14
   '@types/react-dom': 18.0.5
   '@typescript-eslint/eslint-plugin': 5.30.3
@@ -20,6 +21,7 @@ specifiers:
   prettier: 2.7.1
   prettier-plugin-packagejson: 2.2.18
   prettier-plugin-tailwindcss: 0.1.11
+  ramda: ^0.28.0
   react: 18.2.0
   react-dom: 18.2.0
   react-router-dom: ^6.3.0
@@ -31,6 +33,7 @@ specifiers:
 
 dependencies:
   firebase: 9.8.4
+  ramda: 0.28.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-router-dom: 6.3.0_biqbaboplfbrettd7655fr4n2y
@@ -39,6 +42,7 @@ dependencies:
 devDependencies:
   '@0x219/commitlint-config': 1.0.2
   '@commitlint/cli': 17.0.3
+  '@types/ramda': 0.28.14
   '@types/react': 18.0.14
   '@types/react-dom': 18.0.5
   '@typescript-eslint/eslint-plugin': 5.30.3_uhfrv6c56y4b7yuzllo3ym4bou
@@ -1167,6 +1171,12 @@ packages:
 
   /@types/prop-types/15.7.4:
     resolution: {integrity: sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==}
+    dev: true
+
+  /@types/ramda/0.28.14:
+    resolution: {integrity: sha512-hLgAeKxS5MpIEROaIRHscFqWf+V04CB+A0Kq+OjnTs1fEGHXEs4aeOhXIRovAPe6PfWYKHEwEkVIYWf98OjxnA==}
+    dependencies:
+      ts-toolbelt: 6.15.5
     dev: true
 
   /@types/react-dom/18.0.5:
@@ -3769,6 +3779,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /ramda/0.28.0:
+    resolution: {integrity: sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==}
+    dev: false
+
   /range-parser/1.2.0:
     resolution: {integrity: sha1-9JvmtIeJTdxA3MlKMi9hEJLgDV4=}
     engines: {node: '>= 0.6'}
@@ -4412,6 +4426,10 @@ packages:
       typescript: 4.7.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    dev: true
+
+  /ts-toolbelt/6.15.5:
+    resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
     dev: true
 
   /tsconfig-paths/4.0.0:
