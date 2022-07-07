@@ -3,6 +3,7 @@ import Login from "@/pages/login";
 import Heimdall from "@/components/heimdall";
 import Navigator from "@/components/navigator";
 import DashboardLayout from "@/components/templates/dashboard-layout";
+import Songs from "@/pages/songs";
 
 const routeDeclarations: RouteObject[] = [
   {
@@ -27,7 +28,7 @@ const routeDeclarations: RouteObject[] = [
         children: [
           {
             path: "songs",
-            element: <div>Songs</div>,
+            element: <Songs />,
           },
         ],
       },
