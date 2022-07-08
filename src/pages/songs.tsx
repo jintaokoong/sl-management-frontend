@@ -1,19 +1,23 @@
+import CRUDControl from "@/components/molecules/crud-control";
 import TableCellLoader from "@/components/molecules/table-cell-loader";
 import Repeat from "@/components/shared/molecules/repeat";
 import TableBody from "@/components/shared/molecules/table-body";
 import TableHeader from "@/components/shared/molecules/table-header";
 import useSongListing from "@/hooks/use-song-listing";
 import { Song } from "@/types/song";
-import { GoTrashcan, GoPencil } from "react-icons/go";
-import { Menu, Pagination, Paper, Stack, Table, Title } from "@mantine/core";
+import { Pagination, Paper, Stack, Table, Title } from "@mantine/core";
 import { defaultTo } from "ramda";
-import CRUDControl from "@/components/molecules/crud-control";
-import { useBooleanToggle } from "@mantine/hooks";
+import { useState } from "react";
 
 const defaultEmpty = (value: string) => (value.length === 0 ? "N/A" : value);
 
 const Songs = () => {
-  const { data, isLoading } = useSongListing();
+  const [pageSize] = useState(1);
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useSongListing({
+    pagination: { page, pageSize },
+  });
+
   return (
     <div>
       <Stack>
@@ -48,7 +52,12 @@ const Songs = () => {
             </TableBody>
           </Table>
         </Paper>
-        <Pagination position={"right"} total={defaultTo(1, data?.totalPages)} />
+        <Pagination
+          position={"right"}
+          page={page}
+          onChange={setPage}
+          total={defaultTo(1, data?.totalPages)}
+        />
       </Stack>
     </div>
   );
