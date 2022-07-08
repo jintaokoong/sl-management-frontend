@@ -27,7 +27,7 @@ const Songs = () => {
             </TableBody>
           </Table>
         </Paper>
-        <Pagination position={"right"} total={1} />
+        <Pagination position={"right"} total={defaultTo(1, data?.totalPages)} />
       </Stack>
     </div>
   );
