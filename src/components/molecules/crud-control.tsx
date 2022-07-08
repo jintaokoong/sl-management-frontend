@@ -1,7 +1,6 @@
-import useCRUDMenu from "@/hooks/use-crud-menu";
 import { Menu } from "@mantine/core";
 import { useBooleanToggle } from "@mantine/hooks";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { GoPencil, GoTrashcan, GoInfo } from "react-icons/go";
 
 interface Props {
@@ -10,46 +9,45 @@ interface Props {
 }
 
 const CRUDControl: FC<Props> = (p) => {
-  const { state, onConfirm, onReset } = useCRUDMenu();
   const [opened, toggle] = useBooleanToggle();
-  const handler = (s: "edit" | "delete") => () => {
-    if (state === "initial") {
-      return onConfirm(s);
-    } else if (state === "edit") {
-      p.onEdit && p.onEdit();
-      toggle();
-      return onReset();
-    } else {
-      p.onDelete && p.onDelete();
-      toggle();
-      return onReset();
-    }
-  };
+  const [del, toggleDel] = useBooleanToggle();
+
+  const onClose = useCallback(() => {
+    const timer = setTimeout(() => {
+      toggleDel(false);
+      clearTimeout(timer);
+    }, 500);
+    toggle();
+  }, [toggle, toggleDel]);
+
+  const onEditClick = useCallback(() => {
+    p.onEdit && p.onEdit();
+    onClose();
+  }, [p.onEdit, onClose]);
+
+  const onDeleteClick = useCallback(() => {
+    if (!del) return toggleDel();
+    p.onDelete && p.onDelete();
+    onClose();
+  }, [p.onDelete, del, onClose]);
 
   return (
     <Menu
       placement={"end"}
       opened={opened}
       onOpen={() => toggle()}
-      onClose={() => {
-        if (state === "initial") return;
-        toggle();
-        return onReset();
-      }}
+      closeOnItemClick={false}
+      onClose={onClose}
     >
-      <Menu.Item
-        icon={state === "edit" ? <GoInfo /> : <GoPencil />}
-        color={state === "edit" ? "yellow" : "blue"}
-        onClick={handler("edit")}
-      >
-        {state === "edit" ? "確定編輯" : "編輯"}
+      <Menu.Item icon={<GoPencil />} color={"blue"} onClick={onEditClick}>
+        編輯
       </Menu.Item>
       <Menu.Item
-        icon={state === "delete" ? <GoInfo /> : <GoTrashcan />}
-        color={state === "delete" ? "yellow" : "red"}
-        onClick={handler("delete")}
+        icon={del ? <GoInfo /> : <GoTrashcan />}
+        color={del ? "yellow" : "red"}
+        onClick={onDeleteClick}
       >
-        {state === "delete" ? "確定刪除" : "刪除"}
+        {del ? "確定刪除" : "刪除"}
       </Menu.Item>
     </Menu>
   );
