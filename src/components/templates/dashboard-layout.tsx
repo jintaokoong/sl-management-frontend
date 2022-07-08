@@ -15,7 +15,7 @@ const DashboardLayout = () => {
   return (
     <AppShell
       header={
-        <Header height={50} pb={"sm"}>
+        <Header height={60}>
           <Group
             position={"apart"}
             px={"md"}
