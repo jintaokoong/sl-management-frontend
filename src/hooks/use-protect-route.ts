@@ -12,6 +12,7 @@ const useProtectRoute = (hydrated: boolean, authenticated: boolean) => {
     if (!hydrated) return;
 
     const { pathname } = location;
+    console.log(pathname);
     if (!authenticated && any((s) => pathname.startsWith(s), privateRoutes)) {
       navigate("/login", { replace: true });
     } else if (
@@ -22,7 +23,7 @@ const useProtectRoute = (hydrated: boolean, authenticated: boolean) => {
     } else if (location.pathname === "/") {
       navigate(authenticated ? "/main/songs" : "/login");
     }
-  }, [navigate, location, authenticated]);
+  }, [navigate, location, authenticated, hydrated]);
 };
 
 export default useProtectRoute;

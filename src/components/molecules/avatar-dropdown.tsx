@@ -10,7 +10,7 @@ const AvatarDropdown = (p: Props) => {
   return (
     <Menu
       control={
-        <ActionIcon variant={"light"} radius={"xl"} size={32}>
+        <ActionIcon variant={"light"} color={"blue"} radius={"xl"} size={36}>
           {p.initial}
         </ActionIcon>
       }
