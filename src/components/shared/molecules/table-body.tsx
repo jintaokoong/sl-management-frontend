@@ -1,4 +1,8 @@
-import { Fragment, ReactNode } from "react";
+import { range } from "ramda";
+import { Fragment, ReactNode, Suspense } from "react";
+import For from "../atoms/for";
+import Show from "../atoms/show";
+import Repeat from "./repeat";
 
 interface Props<T> {
   data: T[];
@@ -10,11 +14,23 @@ interface Props<T> {
 const TableBody = <T,>(p: Props<T>) => {
   return (
     <tbody>
-      {p.loading
-        ? Array(5)
-            .fill(0)
-            .map((_, index) => <Fragment key={index}>{p.fallback}</Fragment>)
-        : p.data.map(p.children)}
+      <Show
+        when={!p.loading}
+        fallback={<Repeat occurence={5}>{p.fallback}</Repeat>}
+      >
+        <For
+          data={p.data}
+          fallback={
+            <tr>
+              <td colSpan={999} style={{ textAlign: "center" }}>
+                無法顯示任何數據
+              </td>
+            </tr>
+          }
+        >
+          {p.children}
+        </For>
+      </Show>
     </tbody>
   );
 };

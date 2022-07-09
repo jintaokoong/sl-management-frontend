@@ -3,25 +3,49 @@ import TableCellLoader from "@/components/molecules/table-cell-loader";
 import Repeat from "@/components/shared/molecules/repeat";
 import TableBody from "@/components/shared/molecules/table-body";
 import TableHeader from "@/components/shared/molecules/table-header";
+import { useSearch } from "@/hooks/use-search";
 import useSongListing from "@/hooks/use-song-listing";
 import { Song } from "@/types/song";
-import { Pagination, Paper, Stack, Table, Title } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Pagination,
+  Paper,
+  Stack,
+  Table,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { defaultTo } from "ramda";
 import { useState } from "react";
+import { GoSearch } from "react-icons/go";
 
 const defaultEmpty = (value: string) => (value.length === 0 ? "N/A" : value);
 
 const Songs = () => {
-  const [pageSize] = useState(1);
+  const { input, search } = useSearch();
+  const [pageSize] = useState(10);
   const [page, setPage] = useState(1);
   const { data, isLoading } = useSongListing({
     pagination: { page, pageSize },
+    filters: { search },
   });
 
   return (
     <div>
       <Stack>
-        <Title order={2}>歌單一覽</Title>
+        <Group position={"apart"}>
+          <Title order={2}>歌單一覽</Title>
+          <Group spacing={"xs"}>
+            <TextInput
+              value={input.value}
+              onChange={input.onChange}
+              placeholder={"搜尋"}
+              icon={<GoSearch />}
+            />
+            <Button variant={"light"}>新增歌曲</Button>
+          </Group>
+        </Group>
         <Paper withBorder p={"sm"}>
           <Table verticalSpacing={"sm"}>
             <TableHeader headers={["歌名", "歌手", "類型", "操控"]} />
