@@ -12,7 +12,6 @@ import {
   Pagination,
   Paper,
   Select,
-  SelectItem,
   Stack,
   Table,
   TextInput,
