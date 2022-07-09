@@ -1,26 +1,26 @@
+import Controls from "@/components/molecules/control";
 import CRUDControl from "@/components/molecules/crud-control";
 import TableCellLoader from "@/components/molecules/table-cell-loader";
+import UpdateSongModal from "@/components/organisms/update-song-modal";
 import Repeat from "@/components/shared/molecules/repeat";
 import TableBody from "@/components/shared/molecules/table-body";
 import TableHeader from "@/components/shared/molecules/table-header";
+import useDeleteSongMutation from "@/hooks/use-delete-song-mutation";
 import { useSearch } from "@/hooks/use-search";
 import useSongListing from "@/hooks/use-song-listing";
 import { Song } from "@/types/song";
 import {
-  Button,
   Group,
+  LoadingOverlay,
   Pagination,
   Paper,
   Select,
-  SelectItem,
   Stack,
   Table,
-  TextInput,
   Title,
 } from "@mantine/core";
 import { defaultTo } from "ramda";
 import { useCallback, useState } from "react";
-import { GoSearch } from "react-icons/go";
 
 const defaultEmpty = (value: string) => (value.length === 0 ? "N/A" : value);
 
@@ -33,22 +33,28 @@ const Songs = () => {
     pagination: { page, pageSize: pageSize },
     filters: { search },
   });
+  const { mutate, isLoading: isDeleting } = useDeleteSongMutation();
+  const [editSong, setEditSong] = useState<Song>();
+
+  const onEdit = useCallback(
+    (song: Song) => () => setEditSong(song),
+    [setEditSong]
+  );
+  const onDelete = useCallback(
+    (id: string) => () => {
+      mutate(id);
+    },
+    [mutate]
+  );
 
   return (
     <div>
       <Stack>
         <Group position={"apart"}>
           <Title order={2}>歌單一覽</Title>
-          <Group spacing={"xs"}>
-            <TextInput
-              value={input.value}
-              onChange={input.onChange}
-              placeholder={"搜尋"}
-              icon={<GoSearch />}
-            />
-            <Button variant={"light"}>新增歌曲</Button>
-          </Group>
+          <Controls search={input} />
         </Group>
+        <LoadingOverlay visible={isDeleting} />
         <Paper withBorder p={"sm"}>
           <Table verticalSpacing={"sm"}>
             <TableHeader headers={["歌名", "歌手", "類型", "操控"]} />
@@ -70,8 +76,8 @@ const Songs = () => {
                   <td>{defaultEmpty(song.genres.join(", "))}</td>
                   <td>
                     <CRUDControl
-                      onEdit={() => console.log("edit", song._id)}
-                      onDelete={() => console.log("delete", song._id)}
+                      onEdit={onEdit(song)}
+                      onDelete={onDelete(song._id)}
                     />
                   </td>
                 </tr>
@@ -101,6 +107,11 @@ const Songs = () => {
           />
         </Group>
       </Stack>
+      <UpdateSongModal
+        onClose={() => setEditSong(undefined)}
+        opened={editSong !== undefined}
+        song={editSong}
+      />
     </div>
   );
 };

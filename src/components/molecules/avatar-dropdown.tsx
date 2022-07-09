@@ -9,6 +9,8 @@ interface Props {
 const AvatarDropdown = (p: Props) => {
   return (
     <Menu
+      placement={"end"}
+      transition={"pop-top-right"}
       control={
         <ActionIcon variant={"light"} color={"blue"} radius={"xl"} size={36}>
           {p.initial}
