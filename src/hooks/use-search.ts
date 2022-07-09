@@ -1,5 +1,5 @@
 import { useDebouncedValue, useInputState } from "@mantine/hooks";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 interface UseSearchReturn {
   input: {
@@ -11,13 +11,18 @@ interface UseSearchReturn {
   search: string | undefined;
 }
 
-export const useSearch = (): UseSearchReturn => {
+export const useSearch = (reset: () => void): UseSearchReturn => {
   const [input, setInput] = useInputState("");
   const [debounced] = useDebouncedValue(input, 1000);
   const search = useMemo(
     () => (debounced.length === 0 ? undefined : debounced),
     [debounced]
   );
+
+  useEffect(() => {
+    reset();
+  }, [debounced, reset]);
+
   return {
     input: {
       value: input,

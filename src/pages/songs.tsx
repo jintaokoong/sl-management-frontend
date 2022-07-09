@@ -11,23 +11,26 @@ import {
   Group,
   Pagination,
   Paper,
+  Select,
+  SelectItem,
   Stack,
   Table,
   TextInput,
   Title,
 } from "@mantine/core";
 import { defaultTo } from "ramda";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { GoSearch } from "react-icons/go";
 
 const defaultEmpty = (value: string) => (value.length === 0 ? "N/A" : value);
 
 const Songs = () => {
-  const { input, search } = useSearch();
-  const [pageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1);
+  const reset = useCallback(() => setPage(1), [setPage]);
+  const { input, search } = useSearch(reset);
   const { data, isLoading } = useSongListing({
-    pagination: { page, pageSize },
+    pagination: { page, pageSize: pageSize },
     filters: { search },
   });
 
@@ -76,12 +79,27 @@ const Songs = () => {
             </TableBody>
           </Table>
         </Paper>
-        <Pagination
-          position={"right"}
-          page={page}
-          onChange={setPage}
-          total={defaultTo(1, data?.totalPages)}
-        />
+        <Group position={"apart"}>
+          <Select
+            placeholder={"頁面大小"}
+            value={pageSize.toString()}
+            sx={{ maxWidth: "175px" }}
+            onChange={(s) => {
+              if (!s) return;
+              setPageSize(parseInt(s));
+              setPage(1);
+            }}
+            data={[1, 5, 10, 15, 20, 50].map((ps) => ({
+              value: ps.toString(),
+              label: `${ps} 條 / 頁`,
+            }))}
+          />
+          <Pagination
+            page={page}
+            onChange={setPage}
+            total={defaultTo(1, data?.totalPages)}
+          />
+        </Group>
       </Stack>
     </div>
   );
