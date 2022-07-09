@@ -20,6 +20,8 @@ const createOne = (payload: CreateSongRequest) =>
 const updateOne = (payload: UpdateSongRequest) =>
   network.extract(ax.put<Song>(`songs/${payload.id}`, payload));
 
-const songService = { fetchListing, createOne, updateOne };
+const deleteOne = (id: string) => network.extract(ax.delete(`songs/${id}`));
+
+const songService = { fetchListing, createOne, updateOne, deleteOne };
 
 export default songService;

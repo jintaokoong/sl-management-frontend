@@ -1,5 +1,4 @@
 import useUpdateSongMutation from "@/hooks/use-update-song-mutation";
-import { CreateSongRequest } from "@/types/create-song";
 import { Song } from "@/types/song";
 import { UpdateSongRequest } from "@/types/update-song";
 import { Modal, ModalProps } from "@mantine/core";

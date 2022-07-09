@@ -5,11 +5,13 @@ import UpdateSongModal from "@/components/organisms/update-song-modal";
 import Repeat from "@/components/shared/molecules/repeat";
 import TableBody from "@/components/shared/molecules/table-body";
 import TableHeader from "@/components/shared/molecules/table-header";
+import useDeleteSongMutation from "@/hooks/use-delete-song-mutation";
 import { useSearch } from "@/hooks/use-search";
 import useSongListing from "@/hooks/use-song-listing";
 import { Song } from "@/types/song";
 import {
   Group,
+  LoadingOverlay,
   Pagination,
   Paper,
   Select,
@@ -31,7 +33,19 @@ const Songs = () => {
     pagination: { page, pageSize: pageSize },
     filters: { search },
   });
+  const { mutate, isLoading: isDeleting } = useDeleteSongMutation();
   const [editSong, setEditSong] = useState<Song>();
+
+  const onEdit = useCallback(
+    (song: Song) => () => setEditSong(song),
+    [setEditSong]
+  );
+  const onDelete = useCallback(
+    (id: string) => () => {
+      mutate(id);
+    },
+    [mutate]
+  );
 
   return (
     <div>
@@ -40,6 +54,7 @@ const Songs = () => {
           <Title order={2}>歌單一覽</Title>
           <Controls search={input} />
         </Group>
+        <LoadingOverlay visible={isDeleting} />
         <Paper withBorder p={"sm"}>
           <Table verticalSpacing={"sm"}>
             <TableHeader headers={["歌名", "歌手", "類型", "操控"]} />
@@ -61,8 +76,8 @@ const Songs = () => {
                   <td>{defaultEmpty(song.genres.join(", "))}</td>
                   <td>
                     <CRUDControl
-                      onEdit={() => setEditSong(song)}
-                      onDelete={() => console.log("delete", song._id)}
+                      onEdit={onEdit(song)}
+                      onDelete={onDelete(song._id)}
                     />
                   </td>
                 </tr>
