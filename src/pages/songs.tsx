@@ -1,5 +1,6 @@
 import CRUDControl from "@/components/molecules/crud-control";
 import TableCellLoader from "@/components/molecules/table-cell-loader";
+import CreateSongButton from "@/components/organisms/create-song-button";
 import Repeat from "@/components/shared/molecules/repeat";
 import TableBody from "@/components/shared/molecules/table-body";
 import TableHeader from "@/components/shared/molecules/table-header";
@@ -9,6 +10,7 @@ import { Song } from "@/types/song";
 import {
   Button,
   Group,
+  MediaQuery,
   Pagination,
   Paper,
   Select,
@@ -18,10 +20,46 @@ import {
   Title,
 } from "@mantine/core";
 import { defaultTo } from "ramda";
-import { useCallback, useState } from "react";
+import { FC, PropsWithChildren, useCallback, useState } from "react";
 import { GoSearch } from "react-icons/go";
 
 const defaultEmpty = (value: string) => (value.length === 0 ? "N/A" : value);
+
+const FullWidthMobile: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <MediaQuery smallerThan={"xs"} styles={{ width: "100%" }}>
+      {children}
+    </MediaQuery>
+  );
+};
+
+interface ControlProps {
+  search: {
+    value: string;
+    onChange: (
+      value: string | React.ChangeEvent<any> | null | undefined
+    ) => void;
+  };
+}
+
+const Controls = (props: ControlProps) => {
+  return (
+    <FullWidthMobile>
+      <Group spacing={"xs"}>
+        <FullWidthMobile>
+          <TextInput
+            {...props.search}
+            placeholder={"搜尋"}
+            icon={<GoSearch />}
+          />
+        </FullWidthMobile>
+        <FullWidthMobile>
+          <CreateSongButton />
+        </FullWidthMobile>
+      </Group>
+    </FullWidthMobile>
+  );
+};
 
 const Songs = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -38,15 +76,7 @@ const Songs = () => {
       <Stack>
         <Group position={"apart"}>
           <Title order={2}>歌單一覽</Title>
-          <Group spacing={"xs"}>
-            <TextInput
-              value={input.value}
-              onChange={input.onChange}
-              placeholder={"搜尋"}
-              icon={<GoSearch />}
-            />
-            <Button variant={"light"}>新增歌曲</Button>
-          </Group>
+          <Controls search={input} />
         </Group>
         <Paper withBorder p={"sm"}>
           <Table verticalSpacing={"sm"}>
