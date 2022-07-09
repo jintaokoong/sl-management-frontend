@@ -35,6 +35,7 @@ const CRUDControl: FC<Props> = (p) => {
     <Menu
       placement={"end"}
       opened={opened}
+      transition={"pop-top-right"}
       onOpen={() => toggle()}
       closeOnItemClick={false}
       onClose={onClose}
