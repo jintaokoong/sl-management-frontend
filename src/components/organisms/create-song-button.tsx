@@ -30,7 +30,7 @@ const CreateSongButton = () => {
           ) {
             setError(error.response?.data.message);
           } else {
-            setError("伺服器要求出現了錯誤");
+            setError("伺服器要求發生了錯誤");
           }
         },
       });

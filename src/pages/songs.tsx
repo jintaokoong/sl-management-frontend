@@ -1,6 +1,7 @@
+import Controls from "@/components/molecules/control";
 import CRUDControl from "@/components/molecules/crud-control";
 import TableCellLoader from "@/components/molecules/table-cell-loader";
-import CreateSongButton from "@/components/organisms/create-song-button";
+import UpdateSongModal from "@/components/organisms/update-song-modal";
 import Repeat from "@/components/shared/molecules/repeat";
 import TableBody from "@/components/shared/molecules/table-body";
 import TableHeader from "@/components/shared/molecules/table-header";
@@ -8,58 +9,18 @@ import { useSearch } from "@/hooks/use-search";
 import useSongListing from "@/hooks/use-song-listing";
 import { Song } from "@/types/song";
 import {
-  Button,
   Group,
-  MediaQuery,
   Pagination,
   Paper,
   Select,
   Stack,
   Table,
-  TextInput,
   Title,
 } from "@mantine/core";
 import { defaultTo } from "ramda";
-import { FC, PropsWithChildren, useCallback, useState } from "react";
-import { GoSearch } from "react-icons/go";
+import { useCallback, useState } from "react";
 
 const defaultEmpty = (value: string) => (value.length === 0 ? "N/A" : value);
-
-const FullWidthMobile: FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <MediaQuery smallerThan={"xs"} styles={{ width: "100%" }}>
-      {children}
-    </MediaQuery>
-  );
-};
-
-interface ControlProps {
-  search: {
-    value: string;
-    onChange: (
-      value: string | React.ChangeEvent<any> | null | undefined
-    ) => void;
-  };
-}
-
-const Controls = (props: ControlProps) => {
-  return (
-    <FullWidthMobile>
-      <Group spacing={"xs"}>
-        <FullWidthMobile>
-          <TextInput
-            {...props.search}
-            placeholder={"搜尋"}
-            icon={<GoSearch />}
-          />
-        </FullWidthMobile>
-        <FullWidthMobile>
-          <CreateSongButton />
-        </FullWidthMobile>
-      </Group>
-    </FullWidthMobile>
-  );
-};
 
 const Songs = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -70,6 +31,7 @@ const Songs = () => {
     pagination: { page, pageSize: pageSize },
     filters: { search },
   });
+  const [editSong, setEditSong] = useState<Song>();
 
   return (
     <div>
@@ -99,7 +61,7 @@ const Songs = () => {
                   <td>{defaultEmpty(song.genres.join(", "))}</td>
                   <td>
                     <CRUDControl
-                      onEdit={() => console.log("edit", song._id)}
+                      onEdit={() => setEditSong(song)}
                       onDelete={() => console.log("delete", song._id)}
                     />
                   </td>
@@ -130,6 +92,11 @@ const Songs = () => {
           />
         </Group>
       </Stack>
+      <UpdateSongModal
+        onClose={() => setEditSong(undefined)}
+        opened={editSong !== undefined}
+        song={editSong}
+      />
     </div>
   );
 };

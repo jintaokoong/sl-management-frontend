@@ -28,7 +28,7 @@ const SongForm = (p: Props) => {
         />
         {p.networkError && <Text color={"red"}>{p.networkError}</Text>}
         <Button type={"submit"} loading={p.isMutating}>
-          新增
+          上傳
         </Button>
       </Stack>
     </form>
